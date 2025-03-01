@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="26_icon.png">
+    <title>Oshikatsu Goods Searcher</title>
+    <style>
+        /*ナビゲーションバー*/
+        ul{
+            display: flex;  /*横並び*/
+        }
+        li{
+            list-style: none;  /*マーカーを消す（用途不明）*/
+        }
+        a{
+            display: block;  /*文字全体をブロックとして認識*/
+            text-decoration: none;  /*下線を消す*/
+            color: #ffffff;
+            margin-right: 35px;  /*文字間に35px*/
+        }
+        a:hover{
+            color: #898989;
+        }
+        nav{
+            box-sizing: border-box;
+            position: fixed;  /*バーを上部に固定*/
+            padding-top: 5px;  /*パンティング5px（要素が下になる）*/
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #696969;
+        }
+
+        h1{
+            font-size: 50px;
+        }
+        body{
+            background-image: url('25_top_background.png');
+            background-size: 120%;
+            background-repeat: no-repeat;  /* 繰り返しを防ぐ */
+            background-position: center;  /* 画像を中央に配置 */
+        }
+        .bunsho{
+            color: #55516a
+        }
+        .letsuse{
+            color: #0976bf
+        }
+
+
+        .resizeimage img{  /*縦横比を維持したまま拡大*/
+            height: 75px;
+            float: left;
+        }
+
+        p.top-title img{
+            width: 700px
+        }
+
+    </style>
+</head>
+<nav>
+    <div id="header">
+        <center>  <div class = resizeimage >
+            <a href="00_top.html"><img src="22_無題120_20241224150342.png"></a>
+        </div></center>
+    </div>
+</br>
+    <ul>
+        <li><a href="00_top.html">TOP</a></li>
+        <li><a href="01_search.html">検索</a></li>
+        <li><a href="02_information.html">受賞歴</a></li>
+        <li><a href="03_contact.html">お問い合わせ</a></li>
+    </ul>
+</nav>
+
+<body>
+    <center>
+        <p class="top-title">
+            <img src="23_top-title.png">
+        </p>
+        <p class="bunsho">
+            Oshikatsu Goods Searcher は推しの名前と予算を入力するだけで簡単に推し活グッズを検索できるwebサイトです
+        </p>
+        <a class="letsuse" href="01_search.html">使ってみる⇒</a>
+        <p class="bunsho">
+            使用後はこちらのアンケートにご協力ください（3分程度、匿名回答）
+            <a class="letsuse" href="https://forms.office.com/Pages/ResponsePage.aspx?id=07VbxZj7okm9Yto1xwcA4hVR9WKX_JRIgmLKnFMOl6BUNTcwRUNQN0lOQ0RYMFAxWTBTRDNWT0ZWVC4u">https://forms.office.com/r/TvjM9ahPpS</a>
+        </p>
+
+
+    </center>
+</body>
+</html>
