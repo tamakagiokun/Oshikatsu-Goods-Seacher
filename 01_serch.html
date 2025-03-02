@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="26_icon.png">
+    <title>Oshikatsu Goods Searcher</title>
+    <style>
+        /*ナビゲーションバー*/
+        ul{
+            display: flex;  /*横並び*/
+        }
+        li{
+            list-style: none;  /*マーカーを消す（用途不明）*/
+        }
+        a{
+            display: block;  /*文字全体をブロックとして認識*/
+            text-decoration: none;  /*下線を消す*/
+            color: #ffffff;
+            margin-right: 35px;  /*文字間に35px*/
+        }
+        a:hover{
+            color: #898989;
+        }
+        nav{
+            box-sizing: border-box;
+            position: fixed;  /*バーを上部に固定*/
+            padding-top: 5px;  /*パンティング5px（要素が下になる）*/
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #696969;
+        }
+
+        h1{
+            font-size: 50px;
+            color: #696969
+        }
+        body{
+            background-image: url('24_background.png');
+            background-size: 120%;
+            background-repeat: no-repeat;  /* 繰り返しを防ぐ */
+            background-position: center;  /* 画像を中央に配置 */
+        }
+        form{  /*用途不明*/
+            width: 85%;
+            margin: 0;
+            padding: 0;
+        }
+        .search_botton{
+            display: inline-block;  /*テキストと同じように使用できる*/
+            text-decoration: none;
+            padding: 10px 10px;
+            font-size: 2em;
+            border-radius: 70px;  /*角の丸み*/
+            border: solid 4px #be9acd;  /*枠線の太さ*/
+            color: #d4a8e7;
+            transition: .4s;  /*実行にかかる時間*/
+        }
+        .search_botton:hover{
+            background: #be9acd;
+            color: #ffffff;
+        }
+        input[type="number"]::-webkit-outer-spin-button, 
+        input[type="number"]::-webkit-inner-spin-button{
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"]{
+            -appearance:textfield;
+        }
+        .name{
+            border: none;  /* 枠線無し*/
+            width: 600px;
+            padding: 10px 10px;
+            border-radius: 70px;  /*角*/
+            font-size: 2em;
+            line-height: 1.5;  /* 行間1.5倍 */
+            background: #f4c5ea;
+            color: #ffffff;
+        }
+        .name::placeholder{
+            color: #ffffff;
+        }
+        .yosan{
+            border: none;
+            width: 600px;
+            padding: 10px 10px;
+            border-radius: 70px; 
+            font-size: 2em;
+            line-height: 1.5;
+            background: #adcff5; 
+            color: #ffffff; 
+        }
+        .yosan::placeholder{
+            color: #ffffff;
+        }
+        .resizeimage img{  /*縦横比を維持したまま拡大*/
+            height: 75px;
+            float: left;
+        }
+
+        .modal-wata__wrap input{  /*モーダル表示*//*ちょとよくわからない*/
+            display: none;
+        }
+        .modal-wata__open-label,.modal-wata__close-label{  /*カーソルがポインタになる*/
+            cursor: pointer;
+        }
+        .modal-wata__open-label{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            margin:0 auto;
+            border-radius: 50px;
+            border: 2px solid #ffffff;
+            background-color: #ffc0cd;
+            color: #ffffff;
+            font-weight: 10;
+            font-size: 1em;
+            position: relative; top: 10px; right: 300px;
+        }
+        .modal-wata__open-label:hover{
+            background-color: #ffffff;
+            color: #9d9d9d;
+            outline: 1px solid #9d9d9d;
+        }
+        .modal-wata{
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+        }
+        .modal-wata__open-input:checked + label + input + .modal-wata{
+            display: block;
+            animation: modal-wata-animation .6s;
+        }
+        .modal-wata__content-wrap{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%; /* Change the width for PC */
+            max-width: 650px;
+            background-color: #ffffff;
+            z-index: 2;
+            border-radius: 5px;
+        }
+        .modal-wata__close-label{
+            background-color: #777777;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 20px;
+            width: 36px;
+            height: 36px;
+            line-height: 1.6;
+            text-align: center;
+            display: table-cell;
+            position: fixed;
+            top: -15px;
+            right: -2%;
+            z-index: 99999;
+            font-size: 1.3em;
+        }
+        .modal-wata__content{
+            max-height: 64vh; 
+            overflow-y: auto;
+            padding: 39px 20px 40px;
+        }
+        .modal-wata__background{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .45);
+            z-index: 1;
+        }
+        @keyframes modal-wata-animation{  /*フェードイン*/
+            0%{
+                opacity: 0;
+            }
+            1%{
+                opacity: 1;
+            }
+        }
+
+        .response{
+            white-space: pre-wrap;
+            margin-top: 10px;
+            font-family: 'メイリオ', sans-serif;  /* フォントを指定 */
+            font-size: 22px;  /* フォントサイズを指定 */
+            color: #6d6d6d;
+        }
+
+    </style>
+</head>
+<nav>
+    <div id="header">
+        <center>  <div class = resizeimage >
+            <a href="00_top.html"><img src="22_無題120_20241224150342.png"></a>
+        </div></center>
+    </div>
+</br>
+    <ul>
+        <li><a href="00_top.html">TOP</a></li>
+        <li><a href="01_search.html">検索</a></li>
+        <li><a href="02_information.html">受賞歴</a></li>
+        <li><a href="03_contact.html">お問い合わせ</a></li>
+    </ul>
+</nav>
+</br></br></br>
+<center>
+    <h1>
+        <font color=" #a39ce7"><b>グッズ検索</b></font>
+        </b>
+    </h1>
+    <br>
+</center>
+<body>
+    <center>
+        <input type="text" id="name" class="name" placeholder="推しの名前"><br><br>
+        <input type="number" id="budget" class="yosan" placeholder="予算(円)"><br><br>
+    </center>
+    <div class="modal-wata__wrap">
+        <input type="radio" id="modal-wata__open" class="modal-wata__open-input" name="modal-wata__trigger"/>
+        <label for="modal-wata__open" class="modal-wata__open-label">?</label>
+        <input type="radio" id="modal-wata__close" name="modal-wata__trigger"/>
+        <div class="modal-wata">
+            <div class="modal-wata__content-wrap">
+                <label for="modal-wata__close" class="modal-wata__close-label"></label>
+                <div class="modal-wata__content">
+                    <font color=#696969>＜使い方＞</font><br>
+                    <center>
+                        <font color=#696969>
+                            ①グッズを検索したい推しの名前を入れる<br>（所属場所を名前の前に入れてもいい）<br><br>
+                            ②予算を入れる<br><br>
+                        </font>
+                        <img src="21_tukaikata.png" width="70%" height="70%">
+                    </center>
+                </div>
+            </div>
+            <label for="modal-wata__close">
+                <div class="modal-wata__background"></div>
+            </label>
+        </div>
+    </div>
+
+    <center>
+        <button class=search_botton onclick="sendMessage()">検索</button><br><br>
+        <pre class="response" id="response"></pre>
+        <script src="10_app.js"></script>
+    </center>
+</body>
+</html>
